@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'redux/auth/selectors';
-// import { IconContext } from 'react-icons';
 import { NavHeader, LoginContainer, LinkLayout } from './Navigation.styles';
 
 const Navigation = () => {

@@ -10,7 +10,7 @@ import UserMenu from './UserMenu/UserMenu';
 import RestrictedRoute from './RestrictedRoute/RestrictedRoute';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 import { Loader } from './Loader/Loader';
-import { Error } from './Error/Error';
+
 
 import {
   selectIsAuth,

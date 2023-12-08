@@ -13,7 +13,6 @@ import {
   ErrMessage,
   FormButton,
 } from './ContactForm.styles';
-// import { ButtonClose } from '../ContactCard/ContactCard.styles';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { operationAddContact } from 'redux/contacts/operations';
