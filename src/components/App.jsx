@@ -1,42 +1,96 @@
-import ContactForm from './ContactForm/ContactForm';
-import ContactList from './ContactList/ContactList';
-import Filter from './Filter/Filter';
-import { selectError, selectisLoading } from 'redux/selectors';
+import { useSelector, useDispatch } from 'react-redux';
+import { Suspense, lazy, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Navigation from './Navigation/Navigation';
+import UserMenu from './UserMenu/UserMenu';
+import RestrictedRoute from './RestrictedRoute/RestrictedRoute';
+import PrivateRoute from './PrivateRoute/PrivateRoute';
 import { Loader } from './Loader/Loader';
 import { Error } from './Error/Error';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { operationFetchContacts } from 'redux/operations';
+
+import {
+  selectIsAuth,
+  selectAuthError,
+} from 'redux/auth/selectors';
+import { operationRefreshUser } from 'redux/auth/operations';
+import { selectError } from 'redux/contacts/selectors';
+
+const RegisterPage = lazy(() => import('pages/RegisterPage/RegisterPage'));
+const HomePage = lazy(() => import('pages/HomePage/HomePage'));
+const LoginPage = lazy(() => import('pages/LoginPage/LoginPage'));
+const ContactsPage = lazy(() => import('pages/ContactsPage'));
+
+const appRoutes = [
+  { path: '/', element: <HomePage /> },
+  {
+    path: '/register',
+    element: (
+      <RestrictedRoute>
+        <RegisterPage />
+      </RestrictedRoute>
+    ),
+  },
+  {
+    path: '/login',
+    element: (
+      <RestrictedRoute>
+        <LoginPage />
+      </RestrictedRoute>
+    ),
+  },
+  {
+    path: '/contacts',
+    element: (
+      <PrivateRoute>
+        <ContactsPage />
+      </PrivateRoute>
+    ),
+  },
+];
 
 const App = () => {
-  const isLoading = useSelector(selectisLoading);
-  const error = useSelector(selectError);
   const dispatch = useDispatch();
 
+  const isAuth = useSelector(selectIsAuth);
+  const errorAuth = useSelector(selectAuthError);
+  const errorFetch = useSelector(selectError);
+
   useEffect(() => {
-    dispatch(operationFetchContacts());
+    dispatch(operationRefreshUser());
   }, [dispatch]);
 
   return (
     <>
-      {isLoading && <Loader />}
+      <Navigation />
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '15px',
-          margin: '0 auto',
-          padding: '30px',
-        }}
-      >
-        <h1>Phonebook</h1>
-        <ContactForm />
-        <h2>Contacts</h2>
-        {error && <Error />}
-        <Filter />
-        <ContactList />
-      </div>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          {appRoutes.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
+        </Routes>
+      </Suspense>
+
+      {isAuth && <UserMenu />}
+      {errorAuth || (errorFetch && toast.error('Please try again!'))}
+
+      <ToastContainer
+        position="top-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+
     </>
   );
 };

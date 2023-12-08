@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ErrorMessage, Field } from 'formik';
+import { NavLink } from 'react-router-dom';
 
 export const Container = styled.div`
   max-width: 444px;
@@ -7,9 +7,10 @@ export const Container = styled.div`
   margin-left: auto;
   box-sizing: border-box;
   margin-right: auto;
+  display: block;
   padding-left: 16px;
   padding-right: 16px;
-  margin-top: 15px;
+  margin-top: 64px;
   display: flex;
   flex-direction: column;
   -webkit-box-align: center;
@@ -42,16 +43,21 @@ export const InputContainer = styled.div`
   gap: 7px;
 `;
 
-export const Input = styled(Field)`
-  font-size: 20px;
-  letter-spacing: 1.2px;
-  color: black;
+export const Input = styled.input`
+  font: inherit;
+  letter-spacing: inherit;
+  color: currentcolor;
   border: 1px solid gray;
   border-radius: 10px;
   box-sizing: content-box;
-  height: 35px;
+  background: none;
+  height: 1.4375em;
   margin: 0px;
-  padding: 16px 14px;
+  -webkit-tap-highlight-color: transparent;
+  display: block;
+  min-width: 0px;
+  width: 100%;
+  padding: 16.5px 14px;
 `;
 
 export const InputText = styled.span`
@@ -77,6 +83,7 @@ export const InputText = styled.span`
   }
 `;
 
+
 export const FormButton = styled.button`
   border-radius: 20px;
   margin: 24px 0px 16px;
@@ -101,7 +108,8 @@ export const FormButton = styled.button`
   }
 `;
 
-export const ErrMessage = styled(ErrorMessage)`
-  color: red;
+export const TextLink = styled(NavLink)`
+  margin-left: 10px;
+  margin-right: 10px;
+  color: rgb(59 130 246);
 `;
-

@@ -5,10 +5,12 @@ export const List = styled.ul`
   flex-wrap: wrap;
   flex-direction: row;
   gap: 20px;
+  justify-content: center;
+  margin-bottom: 20px;
 `;
 
 export const ContactItem = styled.li`
-  width: 600px;
+  width: 450px;
   padding: 20px;
   background: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);

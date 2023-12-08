@@ -1,12 +1,23 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { Form } from 'formik';
 import * as Yup from 'yup';
-import { ErrMessage, StyledForm, Input } from './ContactForm.styles';
-import { ButtonClose } from '../ContactCard/ContactCard.styles';
+import {
+  Container,
+  Title,
+  FormContainer,
+  FormEl,
+  InputContainer,
+  Input,
+  InputText,
+  ErrMessage,
+  FormButton,
+} from './ContactForm.styles';
+// import { ButtonClose } from '../ContactCard/ContactCard.styles';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { operationAddContact } from 'redux/operations';
-import { selectContacts } from 'redux/selectors';
+import { operationAddContact } from 'redux/contacts/operations';
+import { selectContacts } from 'redux/contacts/selectors';
 
 const contactSchema = Yup.object().shape({
   name: Yup.string()
@@ -54,7 +65,7 @@ const ContactForm = () => {
       }}
       validationSchema={contactSchema}
       onSubmit={(values, actions, id) => {
-        addNewContact(values, id)
+        addNewContact(values, id);
         actions.resetForm({
           values: {
             name: '',
@@ -64,21 +75,33 @@ const ContactForm = () => {
         });
       }}
     >
-      <StyledForm>
-        <label htmlFor="name">Name</label>
-        <Input name="name" placeholder="Please enter your name" />
-        <ErrMessage name="name" component="div" />
+      <Container>
+        <Title>Add new contact</Title>
+        <Form>
+          <FormContainer>
+            <FormEl>
+              <label>
+                <InputContainer>
+                  <Input name="name" required placeholder="" />
+                  <InputText>Name*</InputText>
+                  <ErrMessage name="name" component="div" />
+                </InputContainer>
+              </label>
+            </FormEl>
 
-        <label htmlFor="number">Number</label>
-        <Input
-          name="number"
-          placeholder="Please enter your number"
-          type="text"
-        />
-        <ErrMessage name="number" component="div" />
-
-        <ButtonClose type="submit">Add contact</ButtonClose>
-      </StyledForm>
+            <FormEl>
+              <label>
+                <InputContainer>
+                  <Input name="number" placeholder="" type="text" />
+                  <InputText>Phone number*</InputText>
+                  <ErrMessage name="number" component="div" />
+                </InputContainer>
+              </label>
+            </FormEl>
+          </FormContainer>
+          <FormButton type="submit">Add contact</FormButton>
+        </Form>
+      </Container>
     </Formik>
   );
 };
